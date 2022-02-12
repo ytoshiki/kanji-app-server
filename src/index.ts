@@ -1,7 +1,7 @@
 require('dotenv').config();
 import { ApolloServer } from "apollo-server"
 import { typeDefs } from "./schema";
-import mongoose from  'mongoose';
+import mongoose, { ConnectOptions } from  'mongoose';
 import { Mutation } from "./resolvers/mutations";
 import { getUserFromToken } from "./utils/getUserFromToken";
 import { Query } from "./resolvers";
@@ -44,7 +44,11 @@ const startServer = async () => {
   if (!dbUrl) {
     throw new Error("DB connection is mandatory");
   }
-  await mongoose.connect(dbUrl);
+  await mongoose.connect(dbUrl, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    autoIndex: true, //make this also true
+  } as ConnectOptions);
 
   const db = mongoose.connection;
   db.on('error', console.error.bind(console, 'connection error:'));

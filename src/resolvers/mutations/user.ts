@@ -33,6 +33,17 @@ export const userResolvers = {
       }
     }
   
+    if (password.length < 6) {
+      return {
+        userErrors: [{
+          message: "Password is too short. At least 6 charateres are required"
+        }],
+        token: null,
+        username: null,
+        avatar: null
+      }
+    }
+
     try {
 
       const user = new User(credentials);
@@ -52,7 +63,7 @@ export const userResolvers = {
       
        return {
         userErrors: [{
-          message: "Username or password is already taken."
+          message: "Username is already taken."
         }],
         token: "",
         username: null,
