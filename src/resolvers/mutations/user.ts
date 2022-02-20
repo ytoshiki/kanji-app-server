@@ -11,6 +11,7 @@ interface Args {
 
 interface AuthPayloadType {
   userErrors: {message: string}[];
+  id: string | null;
   token: string | null;
   avatar: string | null;
   username: string | null;
@@ -29,7 +30,8 @@ export const userResolvers = {
         }],
         token: null,
         username: null,
-        avatar: null
+        avatar: null,
+        id: null
       }
     }
   
@@ -40,7 +42,8 @@ export const userResolvers = {
         }],
         token: null,
         username: null,
-        avatar: null
+        avatar: null,
+        id: null
       }
     }
 
@@ -56,7 +59,8 @@ export const userResolvers = {
         userErrors: [],
         token,
         username: newUser.username,
-        avatar: null
+        avatar: (newUser.avatar) as string,
+        id: newUser._id.toString()
       }
       
     } catch (error) {
@@ -67,7 +71,8 @@ export const userResolvers = {
         }],
         token: "",
         username: null,
-        avatar: null
+        avatar: null,
+        id: null
       }
     }
   },
@@ -82,7 +87,8 @@ export const userResolvers = {
         }],
         token: null,
         username: null,
-        avatar: null
+        avatar: null,
+        id: null
       }
     }
 
@@ -96,7 +102,8 @@ export const userResolvers = {
           }],
           token: null,
           username: null,
-        avatar: null
+        avatar: null,
+        id: null
         }
       } 
 
@@ -110,7 +117,8 @@ export const userResolvers = {
           }],
           token: null,
           username: null,
-        avatar: null
+        avatar: null,
+        id: null
         }
       }
 
@@ -121,7 +129,8 @@ export const userResolvers = {
         userErrors: [],
         token,
         username: user.username,
-        avatar: user.avatar || null
+        avatar: (user.avatar) as string,
+        id: user._id.toString()
       }
 
     } catch (error) {
@@ -133,7 +142,8 @@ export const userResolvers = {
         ],
         token: null,
         username: null,
-        avatar: null
+        avatar: null,
+        id: null
       }
     }
   }

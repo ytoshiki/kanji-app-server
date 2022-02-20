@@ -72,8 +72,9 @@ var UserSchema = new mongoose.Schema({
         required: true,
         minLength: 6
     },
-    avator: {
-        type: String
+    avatar: {
+        type: String,
+        default: "example.svg"
     },
     list: [
         {
@@ -110,28 +111,31 @@ UserSchema.pre('save', function (next) {
         });
     });
 });
-UserSchema.methods.verifyPassword = function (password) { return __awaiter(void 0, void 0, void 0, function () {
-    var success, error_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4, bcryptjs_1.default.compare(password, this.password)];
-            case 1:
-                success = _a.sent();
-                if (success) {
-                    return [2, true];
-                }
-                else {
+UserSchema.methods.verifyPassword = function (password) {
+    return __awaiter(this, void 0, void 0, function () {
+        var success, error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4, bcryptjs_1.default.compare(password, this.password)];
+                case 1:
+                    success = _a.sent();
+                    if (success) {
+                        return [2, true];
+                    }
+                    else {
+                        return [2, false];
+                    }
+                    return [3, 3];
+                case 2:
+                    error_2 = _a.sent();
+                    console.log(error_2);
                     return [2, false];
-                }
-                return [3, 3];
-            case 2:
-                error_2 = _a.sent();
-                return [2, false];
-            case 3: return [2];
-        }
+                case 3: return [2];
+            }
+        });
     });
-}); };
+};
 var User = mongoose.model('User', UserSchema);
 exports.default = User;

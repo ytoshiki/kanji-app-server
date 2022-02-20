@@ -35,19 +35,24 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 require('dotenv').config();
 var apollo_server_1 = require("apollo-server");
 var schema_1 = require("./schema");
-var mongoose = require('mongoose');
+var mongoose_1 = __importDefault(require("mongoose"));
 var mutations_1 = require("./resolvers/mutations");
+var getUserFromToken_1 = require("./utils/getUserFromToken");
+var resolvers_1 = require("./resolvers");
 var startServer = function () { return __awaiter(void 0, void 0, void 0, function () {
     var resolvers, server, dbUrl, db;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 resolvers = {
-                    Query: {},
+                    Query: resolvers_1.Query,
                     Mutation: mutations_1.Mutation
                 };
                 server = new apollo_server_1.ApolloServer({
@@ -56,21 +61,39 @@ var startServer = function () { return __awaiter(void 0, void 0, void 0, functio
                     context: function (_a) {
                         var req = _a.req;
                         return __awaiter(void 0, void 0, void 0, function () {
-                            var token;
+                            var token, userInfo;
                             return __generator(this, function (_b) {
-                                token = req.headers.authorization;
-                                return [2, {
-                                        userInfo: null
-                                    }];
+                                switch (_b.label) {
+                                    case 0:
+                                        token = req.headers.authorization;
+                                        if (!token) {
+                                            return [2, {
+                                                    userInfo: null
+                                                }];
+                                        }
+                                        return [4, (0, getUserFromToken_1.getUserFromToken)(token)];
+                                    case 1:
+                                        userInfo = _b.sent();
+                                        return [2, {
+                                                userInfo: userInfo
+                                            }];
+                                }
                             });
                         });
                     }
                 });
                 dbUrl = process.env.DB_CONN;
-                return [4, mongoose.connect(dbUrl)];
+                if (!dbUrl) {
+                    throw new Error("DB connection is mandatory");
+                }
+                return [4, mongoose_1.default.connect(dbUrl, {
+                        useUnifiedTopology: true,
+                        useNewUrlParser: true,
+                        autoIndex: true,
+                    })];
             case 1:
                 _a.sent();
-                db = mongoose.connection;
+                db = mongoose_1.default.connection;
                 db.on('error', console.error.bind(console, 'connection error:'));
                 db.once('open', function () {
                     console.log('MongoDB Connected');

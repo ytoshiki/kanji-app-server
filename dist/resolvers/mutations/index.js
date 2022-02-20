@@ -12,5 +12,6 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Mutation = void 0;
+var kanji_1 = require("./kanji");
 var user_1 = require("./user");
-exports.Mutation = __assign({}, user_1.userResolvers);
+exports.Mutation = __assign(__assign({}, user_1.userResolvers), kanji_1.KanjiResolvers);

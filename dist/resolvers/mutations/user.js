@@ -56,7 +56,21 @@ exports.userResolvers = {
                                     userErrors: [{
                                             message: "Username and password are required"
                                         }],
-                                    token: null
+                                    token: null,
+                                    username: null,
+                                    avatar: null,
+                                    id: null
+                                }];
+                        }
+                        if (password.length < 6) {
+                            return [2, {
+                                    userErrors: [{
+                                            message: "Password is too short. At least 6 charateres are required"
+                                        }],
+                                    token: null,
+                                    username: null,
+                                    avatar: null,
+                                    id: null
                                 }];
                         }
                         _c.label = 1;
@@ -69,19 +83,101 @@ exports.userResolvers = {
                         token = (0, generateAccessToken_1.generateAccessToken)({ id: newUser._id.toString() });
                         return [2, {
                                 userErrors: [],
-                                token: token
+                                token: token,
+                                username: newUser.username,
+                                avatar: (newUser.avatar),
+                                id: newUser._id.toString()
                             }];
                     case 3:
                         error_1 = _c.sent();
                         return [2, {
                                 userErrors: [{
-                                        message: "Username or password is already taken."
+                                        message: "Username is already taken."
                                     }],
-                                token: ""
+                                token: "",
+                                username: null,
+                                avatar: null,
+                                id: null
                             }];
                     case 4: return [2];
                 }
             });
         });
     },
+    signin: function (_, _a, _b) {
+        var credentials = _a.credentials;
+        return __awaiter(void 0, void 0, void 0, function () {
+            var username, password, user, userVerified, token, error_2;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        username = credentials.username, password = credentials.password;
+                        if (!username || !password) {
+                            return [2, {
+                                    userErrors: [{
+                                            message: "Username and password are required"
+                                        }],
+                                    token: null,
+                                    username: null,
+                                    avatar: null,
+                                    id: null
+                                }];
+                        }
+                        _c.label = 1;
+                    case 1:
+                        _c.trys.push([1, 4, , 5]);
+                        return [4, user_1.default.findOne({ username: username })];
+                    case 2:
+                        user = _c.sent();
+                        if (!user) {
+                            return [2, {
+                                    userErrors: [{
+                                            message: "User Not Found"
+                                        }],
+                                    token: null,
+                                    username: null,
+                                    avatar: null,
+                                    id: null
+                                }];
+                        }
+                        return [4, user.verifyPassword(password)];
+                    case 3:
+                        userVerified = _c.sent();
+                        if (!userVerified) {
+                            return [2, {
+                                    userErrors: [{
+                                            message: "Username and Password don't match"
+                                        }],
+                                    token: null,
+                                    username: null,
+                                    avatar: null,
+                                    id: null
+                                }];
+                        }
+                        token = (0, generateAccessToken_1.generateAccessToken)({ id: user._id.toString() });
+                        return [2, {
+                                userErrors: [],
+                                token: token,
+                                username: user.username,
+                                avatar: (user.avatar),
+                                id: user._id.toString()
+                            }];
+                    case 4:
+                        error_2 = _c.sent();
+                        return [2, {
+                                userErrors: [
+                                    {
+                                        message: "Something went wrong"
+                                    }
+                                ],
+                                token: null,
+                                username: null,
+                                avatar: null,
+                                id: null
+                            }];
+                    case 5: return [2];
+                }
+            });
+        });
+    }
 };
