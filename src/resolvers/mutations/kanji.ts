@@ -1,47 +1,48 @@
-import { Context } from "../.."
-import Kanji, { IKanji } from "../../models/kanji"
+import { Context } from "../..";
+import Kanji, { IKanji } from "../../models/kanji";
 import User from "../../models/user";
 
 interface KanjiCreateArgs {
   input: {
     character: string;
-  }
+  };
 }
 
 interface KanjiDeleteArgs {
   input: {
     character: string;
-  }
+  };
 }
 
 interface KanjiStatusUpdateArgs {
   input: {
     character: string;
     status: string;
-  }
+  };
 }
 
-
 interface KanjiPayload {
-  kanjiErrors: {message: string}[];
+  kanjiErrors: { message: string }[];
   kanji: IKanji | null;
 }
 
-
 export const KanjiResolvers = {
-  kanjiCreate: async (_:any, {input}: KanjiCreateArgs, {userInfo}: Context): Promise<KanjiPayload> => {
+  kanjiCreate: async (
+    _: any,
+    { input }: KanjiCreateArgs,
+    { userInfo }: Context
+  ): Promise<KanjiPayload> => {
     if (!userInfo) {
       return {
         kanjiErrors: [
           {
-            message: "Token is either missing or invalid"
-          }
+            message: "Token is either missing or invalid",
+          },
         ],
-        kanji: null
-      }
+        kanji: null,
+      };
     }
 
-    
     const { id } = userInfo;
     const { character } = input;
 
@@ -49,95 +50,95 @@ export const KanjiResolvers = {
       return {
         kanjiErrors: [
           {
-            message: `character is missing`
-          }
+            message: `character is missing`,
+          },
         ],
-        kanji: null
-      }
+        kanji: null,
+      };
     }
-    
-    try {
 
-      const kanjiAlreadyListed = await Kanji.findOne({ character, user: id});
+    try {
+      const kanjiAlreadyListed = await Kanji.findOne({ character, user: id });
 
       if (kanjiAlreadyListed) {
         return {
           kanjiErrors: [
             {
-              message: `${character} is already in your list`
-            }
+              message: `${character} is already in your list`,
+            },
           ],
-          kanji: null
-        }
+          kanji: null,
+        };
       }
 
-      const kanji = new Kanji({character, user: id});
+      const kanji = new Kanji({ character, user: id });
       const newKanji = await kanji.save();
 
       if (!newKanji) {
         return {
           kanjiErrors: [
             {
-              message: "Failed to create kanji"
-            }
+              message: "Failed to create kanji",
+            },
           ],
-          kanji: null
-        }
+          kanji: null,
+        };
       }
 
       const user = await User.findByIdAndUpdate(
         id,
         {
           $push: {
-            list: newKanji._id
-          }
+            list: newKanji._id,
+          },
         },
         { new: true }
-      ).populate('list');
+      ).populate("list");
 
       if (!user) {
         return {
           kanjiErrors: [
             {
-              message: "Faied to update user's list"
-            }
+              message: "Faied to update user's list",
+            },
           ],
-          kanji: null
-        }
+          kanji: null,
+        };
       }
 
-    return {
-      kanjiErrors: [],
-      kanji: newKanji
-    }
-
+      return {
+        kanjiErrors: [],
+        kanji: newKanji,
+      };
     } catch (error) {
       console.log(error);
 
       return {
         kanjiErrors: [
           {
-            message: "Something went wrong"
-          }
+            message: "Something went wrong",
+          },
         ],
-        kanji: null
-      }
+        kanji: null,
+      };
     }
-    
   },
-  kanjiStatusUpdate: async (_:any, {input}: KanjiStatusUpdateArgs, {userInfo}: Context): Promise<KanjiPayload> => {
-
+  kanjiStatusUpdate: async (
+    _: any,
+    { input }: KanjiStatusUpdateArgs,
+    { userInfo }: Context
+  ): Promise<KanjiPayload> => {
     if (!userInfo) {
       return {
         kanjiErrors: [
           {
-            message: "Token is either missing or invalid"
-          }
+            message: "Token is either missing or invalid",
+          },
         ],
-        kanji: null
-      }
+        kanji: null,
+      };
     }
-    
+
     const { id } = userInfo;
     const { character, status } = input;
 
@@ -145,11 +146,11 @@ export const KanjiResolvers = {
       return {
         kanjiErrors: [
           {
-            message: `Either character or status is missing`
-          }
+            message: `Either character or status is missing`,
+          },
         ],
-        kanji: null
-      }
+        kanji: null,
+      };
     }
 
     const validStatus = ["low", "middle", "high"];
@@ -158,68 +159,69 @@ export const KanjiResolvers = {
       return {
         kanjiErrors: [
           {
-            message: `${status} is an invalid status`
-          }
+            message: `${status} is an invalid status`,
+          },
         ],
-        kanji: null
-      }
+        kanji: null,
+      };
     }
-    
-    try {
 
+    try {
       const kanjiFilter = {
         character,
-        user: id
-      }
+        user: id,
+      };
 
       const kanjiUpdate = {
-        status
-      }
+        status,
+      };
 
       const kanji = await Kanji.findOneAndUpdate(kanjiFilter, kanjiUpdate, {
-        new: true
+        new: true,
       });
 
       if (!kanji) {
         return {
           kanjiErrors: [
             {
-              message: `${character} is not found in your list`
-            }
+              message: `${character} is not found in your list`,
+            },
           ],
-          kanji: null
-        }
+          kanji: null,
+        };
       }
 
       return {
         kanjiErrors: [],
-        kanji: kanji
-      }
-
+        kanji: kanji,
+      };
     } catch (error) {
-
       return {
         kanjiErrors: [
           {
-            message: "Something went wrong"
-          }
+            message: "Something went wrong",
+          },
         ],
-        kanji: null
-      }
+        kanji: null,
+      };
     }
   },
-  kanjiDelete: async (_:any, {input}: KanjiDeleteArgs, {userInfo}: Context): Promise<KanjiPayload> => {
+  kanjiDelete: async (
+    _: any,
+    { input }: KanjiDeleteArgs,
+    { userInfo }: Context
+  ): Promise<KanjiPayload> => {
     if (!userInfo) {
       return {
         kanjiErrors: [
           {
-            message: "Token is either missing or invalid"
-          }
+            message: "Token is either missing or invalid",
+          },
         ],
-        kanji: null
-      }
+        kanji: null,
+      };
     }
-    
+
     const { id } = userInfo;
     const { character } = input;
 
@@ -227,20 +229,18 @@ export const KanjiResolvers = {
       return {
         kanjiErrors: [
           {
-            message: `Character is missing`
-          }
+            message: `Character is missing`,
+          },
         ],
-        kanji: null
-      }
+        kanji: null,
+      };
     }
 
-    
     try {
-
       const kanjiFilter = {
         character,
-        user: id
-      }
+        user: id,
+      };
 
       const kanji = await Kanji.findOneAndDelete(kanjiFilter);
 
@@ -248,43 +248,45 @@ export const KanjiResolvers = {
         return {
           kanjiErrors: [
             {
-              message: `${character} is not found in your list`
-            }
+              message: `${character} is not found in your list`,
+            },
           ],
-          kanji: null
-        }
+          kanji: null,
+        };
       }
 
-      const user = await User.findByIdAndUpdate(id, { $pull: { list: { $in: kanji._id } } },  {
-        new: true
-      });
+      const user = await User.findByIdAndUpdate(
+        id,
+        { $pull: { list: { $in: kanji._id } } },
+        {
+          new: true,
+        }
+      );
 
       if (!user) {
         return {
           kanjiErrors: [
             {
-              message: "Failed to delete kanji from list"
-            }
+              message: "Failed to delete kanji from list",
+            },
           ],
-          kanji: null
-        }
+          kanji: null,
+        };
       }
 
       return {
         kanjiErrors: [],
-        kanji: kanji
-      }
-
+        kanji: kanji,
+      };
     } catch (error) {
-
       return {
         kanjiErrors: [
           {
-            message: "Something went wrong"
-          }
+            message: "Something went wrong",
+          },
         ],
-        kanji: null
-      }
+        kanji: null,
+      };
     }
-  }
-}
+  },
+};
