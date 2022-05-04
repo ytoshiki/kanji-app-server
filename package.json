@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node .",
-    "dev": "nodemon -q ./dist/index.js",
+    "dev": "nodemon -q ./api/index.js",
     "start:dev": "nodemon --watch './**/*.ts' --exec 'ts-node' src/index.ts",
-    "clean": "rimraf dist/*",
+    "clean": "rimraf api/*",
     "tsc": "tsc",
     "build": "npm-run-all clean tsc"
   },
