@@ -24,20 +24,19 @@ var KanjiSchema = new mongoose.Schema({
     character: {
         type: String,
         required: true,
-        unique: true
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+        ref: "User",
+        required: true,
     },
     status: {
         type: String,
         enum: ["low", "middle", "high"],
-        default: "middle"
-    }
+        default: "middle",
+    },
 }, {
-    timestamps: true
+    timestamps: true,
 });
-var Kanji = mongoose.model('Kanji', KanjiSchema);
+var Kanji = mongoose.model("Kanji", KanjiSchema);
 exports.default = Kanji;

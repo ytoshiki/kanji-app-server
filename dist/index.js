@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-require('dotenv').config();
+require("dotenv").config();
 var apollo_server_1 = require("apollo-server");
 var schema_1 = require("./schema");
 var mongoose_1 = __importDefault(require("mongoose"));
@@ -53,7 +53,7 @@ var startServer = function () { return __awaiter(void 0, void 0, void 0, functio
             case 0:
                 resolvers = {
                     Query: resolvers_1.Query,
-                    Mutation: mutations_1.Mutation
+                    Mutation: mutations_1.Mutation,
                 };
                 server = new apollo_server_1.ApolloServer({
                     typeDefs: schema_1.typeDefs,
@@ -68,19 +68,19 @@ var startServer = function () { return __awaiter(void 0, void 0, void 0, functio
                                         token = req.headers.authorization;
                                         if (!token) {
                                             return [2, {
-                                                    userInfo: null
+                                                    userInfo: null,
                                                 }];
                                         }
                                         return [4, (0, getUserFromToken_1.getUserFromToken)(token)];
                                     case 1:
                                         userInfo = _b.sent();
                                         return [2, {
-                                                userInfo: userInfo
+                                                userInfo: userInfo,
                                             }];
                                 }
                             });
                         });
-                    }
+                    },
                 });
                 dbUrl = process.env.DB_CONN;
                 if (!dbUrl) {
@@ -94,9 +94,9 @@ var startServer = function () { return __awaiter(void 0, void 0, void 0, functio
             case 1:
                 _a.sent();
                 db = mongoose_1.default.connection;
-                db.on('error', console.error.bind(console, 'connection error:'));
-                db.once('open', function () {
-                    console.log('MongoDB Connected');
+                db.on("error", console.error.bind(console, "connection error:"));
+                db.once("open", function () {
+                    console.log("MongoDB Connected");
                 });
                 server.listen().then(function (_a) {
                     var url = _a.url;

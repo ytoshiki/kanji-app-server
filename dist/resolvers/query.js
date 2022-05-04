@@ -45,17 +45,23 @@ exports.Query = {
     user: function (_, __, _a) {
         var userInfo = _a.userInfo;
         return __awaiter(void 0, void 0, void 0, function () {
-            var id, user;
+            var user, error_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         if (!userInfo)
                             return [2, null];
-                        id = userInfo.id;
-                        return [4, user_1.default.findById(id).populate("list")];
+                        _b.label = 1;
                     case 1:
+                        _b.trys.push([1, 3, , 4]);
+                        return [4, user_1.default.findById(userInfo.id).populate("list")];
+                    case 2:
                         user = _b.sent();
                         return [2, user];
+                    case 3:
+                        error_1 = _b.sent();
+                        return [2, null];
+                    case 4: return [2];
                 }
             });
         });

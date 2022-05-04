@@ -55,10 +55,10 @@ exports.KanjiResolvers = {
                             return [2, {
                                     kanjiErrors: [
                                         {
-                                            message: "Token is either missing or invalid"
-                                        }
+                                            message: "Token is either missing or invalid",
+                                        },
                                     ],
-                                    kanji: null
+                                    kanji: null,
                                 }];
                         }
                         id = userInfo.id;
@@ -67,10 +67,10 @@ exports.KanjiResolvers = {
                             return [2, {
                                     kanjiErrors: [
                                         {
-                                            message: "character is missing"
-                                        }
+                                            message: "character is missing",
+                                        },
                                     ],
-                                    kanji: null
+                                    kanji: null,
                                 }];
                         }
                         _c.label = 1;
@@ -83,10 +83,10 @@ exports.KanjiResolvers = {
                             return [2, {
                                     kanjiErrors: [
                                         {
-                                            message: "".concat(character, " is already in your list")
-                                        }
+                                            message: "".concat(character, " is already in your list"),
+                                        },
                                     ],
-                                    kanji: null
+                                    kanji: null,
                                 }];
                         }
                         kanji = new kanji_1.default({ character: character, user: id });
@@ -97,32 +97,32 @@ exports.KanjiResolvers = {
                             return [2, {
                                     kanjiErrors: [
                                         {
-                                            message: "Failed to create kanji"
-                                        }
+                                            message: "Failed to create kanji",
+                                        },
                                     ],
-                                    kanji: null
+                                    kanji: null,
                                 }];
                         }
                         return [4, user_1.default.findByIdAndUpdate(id, {
                                 $push: {
-                                    list: newKanji._id
-                                }
-                            }, { new: true }).populate('list')];
+                                    list: newKanji._id,
+                                },
+                            }, { new: true }).populate("list")];
                     case 4:
                         user = _c.sent();
                         if (!user) {
                             return [2, {
                                     kanjiErrors: [
                                         {
-                                            message: "Faied to update user's list"
-                                        }
+                                            message: "Faied to update user's list",
+                                        },
                                     ],
-                                    kanji: null
+                                    kanji: null,
                                 }];
                         }
                         return [2, {
                                 kanjiErrors: [],
-                                kanji: newKanji
+                                kanji: newKanji,
                             }];
                     case 5:
                         error_1 = _c.sent();
@@ -130,10 +130,10 @@ exports.KanjiResolvers = {
                         return [2, {
                                 kanjiErrors: [
                                     {
-                                        message: "Something went wrong"
-                                    }
+                                        message: "Something went wrong",
+                                    },
                                 ],
-                                kanji: null
+                                kanji: null,
                             }];
                     case 6: return [2];
                 }
@@ -152,10 +152,10 @@ exports.KanjiResolvers = {
                             return [2, {
                                     kanjiErrors: [
                                         {
-                                            message: "Token is either missing or invalid"
-                                        }
+                                            message: "Token is either missing or invalid",
+                                        },
                                     ],
-                                    kanji: null
+                                    kanji: null,
                                 }];
                         }
                         id = userInfo.id;
@@ -164,10 +164,10 @@ exports.KanjiResolvers = {
                             return [2, {
                                     kanjiErrors: [
                                         {
-                                            message: "Either character or status is missing"
-                                        }
+                                            message: "Either character or status is missing",
+                                        },
                                     ],
-                                    kanji: null
+                                    kanji: null,
                                 }];
                         }
                         validStatus = ["low", "middle", "high"];
@@ -175,10 +175,10 @@ exports.KanjiResolvers = {
                             return [2, {
                                     kanjiErrors: [
                                         {
-                                            message: "".concat(status, " is an invalid status")
-                                        }
+                                            message: "".concat(status, " is an invalid status"),
+                                        },
                                     ],
-                                    kanji: null
+                                    kanji: null,
                                 }];
                         }
                         _c.label = 1;
@@ -186,13 +186,13 @@ exports.KanjiResolvers = {
                         _c.trys.push([1, 3, , 4]);
                         kanjiFilter = {
                             character: character,
-                            user: id
+                            user: id,
                         };
                         kanjiUpdate = {
-                            status: status
+                            status: status,
                         };
                         return [4, kanji_1.default.findOneAndUpdate(kanjiFilter, kanjiUpdate, {
-                                new: true
+                                new: true,
                             })];
                     case 2:
                         kanji = _c.sent();
@@ -200,25 +200,25 @@ exports.KanjiResolvers = {
                             return [2, {
                                     kanjiErrors: [
                                         {
-                                            message: "".concat(character, " is not found in your list")
-                                        }
+                                            message: "".concat(character, " is not found in your list"),
+                                        },
                                     ],
-                                    kanji: null
+                                    kanji: null,
                                 }];
                         }
                         return [2, {
                                 kanjiErrors: [],
-                                kanji: kanji
+                                kanji: kanji,
                             }];
                     case 3:
                         error_2 = _c.sent();
                         return [2, {
                                 kanjiErrors: [
                                     {
-                                        message: "Something went wrong"
-                                    }
+                                        message: "Something went wrong",
+                                    },
                                 ],
-                                kanji: null
+                                kanji: null,
                             }];
                     case 4: return [2];
                 }
@@ -237,10 +237,10 @@ exports.KanjiResolvers = {
                             return [2, {
                                     kanjiErrors: [
                                         {
-                                            message: "Token is either missing or invalid"
-                                        }
+                                            message: "Token is either missing or invalid",
+                                        },
                                     ],
-                                    kanji: null
+                                    kanji: null,
                                 }];
                         }
                         id = userInfo.id;
@@ -249,10 +249,10 @@ exports.KanjiResolvers = {
                             return [2, {
                                     kanjiErrors: [
                                         {
-                                            message: "Character is missing"
-                                        }
+                                            message: "Character is missing",
+                                        },
                                     ],
-                                    kanji: null
+                                    kanji: null,
                                 }];
                         }
                         _c.label = 1;
@@ -260,7 +260,7 @@ exports.KanjiResolvers = {
                         _c.trys.push([1, 4, , 5]);
                         kanjiFilter = {
                             character: character,
-                            user: id
+                            user: id,
                         };
                         return [4, kanji_1.default.findOneAndDelete(kanjiFilter)];
                     case 2:
@@ -269,14 +269,14 @@ exports.KanjiResolvers = {
                             return [2, {
                                     kanjiErrors: [
                                         {
-                                            message: "".concat(character, " is not found in your list")
-                                        }
+                                            message: "".concat(character, " is not found in your list"),
+                                        },
                                     ],
-                                    kanji: null
+                                    kanji: null,
                                 }];
                         }
                         return [4, user_1.default.findByIdAndUpdate(id, { $pull: { list: { $in: kanji._id } } }, {
-                                new: true
+                                new: true,
                             })];
                     case 3:
                         user = _c.sent();
@@ -284,29 +284,29 @@ exports.KanjiResolvers = {
                             return [2, {
                                     kanjiErrors: [
                                         {
-                                            message: "Failed to delete kanji from list"
-                                        }
+                                            message: "Failed to delete kanji from list",
+                                        },
                                     ],
-                                    kanji: null
+                                    kanji: null,
                                 }];
                         }
                         return [2, {
                                 kanjiErrors: [],
-                                kanji: kanji
+                                kanji: kanji,
                             }];
                     case 4:
                         error_3 = _c.sent();
                         return [2, {
                                 kanjiErrors: [
                                     {
-                                        message: "Something went wrong"
-                                    }
+                                        message: "Something went wrong",
+                                    },
                                 ],
-                                kanji: null
+                                kanji: null,
                             }];
                     case 5: return [2];
                 }
             });
         });
-    }
+    },
 };
