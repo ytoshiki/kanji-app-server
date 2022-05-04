@@ -55,9 +55,16 @@ var startServer = function () { return __awaiter(void 0, void 0, void 0, functio
                     Query: resolvers_1.Query,
                     Mutation: mutations_1.Mutation,
                 };
+                console.log(process.env.CLIENT_DOMAIN);
                 server = new apollo_server_1.ApolloServer({
                     typeDefs: schema_1.typeDefs,
                     resolvers: resolvers,
+                    cors: {
+                        origin: [
+                            "".concat(process.env.CLIENT_DOMAIN),
+                            "https://studio.apollographql.com",
+                        ],
+                    },
                     context: function (_a) {
                         var req = _a.req;
                         return __awaiter(void 0, void 0, void 0, function () {

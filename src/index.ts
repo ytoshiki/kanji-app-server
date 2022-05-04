@@ -18,9 +18,17 @@ const startServer = async () => {
     Mutation,
   };
 
+  console.log(process.env.CLIENT_DOMAIN);
+
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    cors: {
+      origin: [
+        `${process.env.CLIENT_DOMAIN}`,
+        "https://studio.apollographql.com",
+      ],
+    },
     context: async ({ req }): Promise<Context> => {
       const token = req.headers.authorization;
       if (!token) {
